@@ -12,9 +12,9 @@ namespace Ecommerce.Api.Repositories
             
         }
 
-        public User? GetUserByEmail(string email)
+        public User? GetByEmail(string email)
         {
-            using (var connection = CreateConnection())
+            using(var connection = CreateConnection())
             {
                 return connection.QueryFirstOrDefault<User>(UserQueries.GetByEmail, new
                 {

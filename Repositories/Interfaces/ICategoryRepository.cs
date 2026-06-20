@@ -2,8 +2,8 @@ using Ecommerce.Api.Models;
 
 namespace Ecommerce.Api.Repositories.Interfaces
 {
-    public interface IUserRepository
+    public interface ICategoryRepository
     {
-        User? GetByEmail(string email);
+        List<Category> GetAll();
     }
 }

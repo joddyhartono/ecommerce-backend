@@ -40,11 +40,15 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
 builder.Services.AddAuthorization();
 
 builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IProductRepository, ProductRepository>();
+builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
 builder.Services.AddScoped<JwtHelper>();
 
 var app = builder.Build();
 
 app.UseCors("AllowOrigin");
+app.UseAuthentication();
+app.UseAuthorization();
 
 if(app.Environment.IsDevelopment())
 {

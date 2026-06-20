@@ -29,7 +29,7 @@ namespace Ecommerce.Api.Controllers
             _logger.LogInformation("Login started");
             try
             {
-                var existingUser = _repository.GetUserByEmail(user.Email);
+                var existingUser = _repository.GetByEmail(user.Email);
                 if(existingUser == null)
                 {
                     return Unauthorized("Invalid email or password");
