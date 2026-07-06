@@ -28,5 +28,16 @@ namespace Ecommerce.Api.Repositories
                 }).ToList();
             }
         }
+
+        public Product? GetProduct(int productId)
+        {
+            using(var connection = CreateConnection())
+            {
+                return connection.QueryFirstOrDefault<Product>(ProductQueries.GetProduct, new
+                {
+                    productId = productId
+                });
+            }
+        }
     }
 }

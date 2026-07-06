@@ -43,11 +43,31 @@ namespace Ecommerce.Api.Controllers
             try
             {
                 var products = _repository.GetProducts(categoryId);
+                _logger.LogInformation("GetProducts success");
                 return Ok(products);
             }
             catch (Exception e)
             {
-                _logger.LogError(e, "An error occured while retrieving all products");
+                _logger.LogError(e, "An error occurred while retrieving all products");
+                return StatusCode(500, "Internal server error");
+            }
+        }
+
+        [Authorize]
+        [HttpGet("{id}")]
+        public IActionResult GetProduct([FromRoute] int id)
+        {
+            _logger.LogInformation("GetProduct started");
+            _logger.LogInformation("{productId}", id);
+            try
+            {
+                var product = _repository.GetProduct(id);
+                _logger.LogInformation("GetProduct success");
+                return Ok(product);
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e, "An error occurred while retrieving a product");
                 return StatusCode(500, "Internal server error");
             }
         }

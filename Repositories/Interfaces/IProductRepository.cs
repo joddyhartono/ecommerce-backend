@@ -6,5 +6,6 @@ namespace Ecommerce.Api.Repositories.Interfaces
     {
         List<Product> GetFeatured();
         List<Product> GetProducts(int? categoryId);
+        Product? GetProduct(int productId);
     }
 }
