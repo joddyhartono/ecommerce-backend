@@ -18,5 +18,15 @@ namespace Ecommerce.Api.Repositories
                 return connection.Query<Product>(ProductQueries.GetFeatured).ToList();
             }
         }
+
+        public List<Product> GetProducts(int? categoryId)
+        {
+            using(var connection = CreateConnection())
+            {
+                return connection.Query<Product>(ProductQueries.GetProducts, new {
+                    categoryId = categoryId
+                }).ToList();
+            }
+        }
     }
 }

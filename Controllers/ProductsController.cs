@@ -34,5 +34,22 @@ namespace Ecommerce.Api.Controllers
                 return StatusCode(500, "Internal server error");
             }
         }
+
+        [Authorize]
+        [HttpGet]
+        public IActionResult GetProducts([FromQuery] int? categoryId)
+        {
+            _logger.LogInformation("GetProducts started");
+            try
+            {
+                var products = _repository.GetProducts(categoryId);
+                return Ok(products);
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e, "An error occured while retrieving all products");
+                return StatusCode(500, "Internal server error");
+            }
+        }
     }
 }
