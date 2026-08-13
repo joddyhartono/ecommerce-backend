@@ -22,5 +22,14 @@ namespace Ecommerce.Api.Repositories
                 });
             }
         }
+
+        public User? Update(User user)
+        {
+            using(var connection = CreateConnection())
+            {
+                connection.Execute(UserQueries.Update, user);
+                return connection.QueryFirstOrDefault<User>(UserQueries.GetByEmail, new {Email = user.Email});
+            }
+        }
     }
 }
