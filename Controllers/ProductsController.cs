@@ -37,12 +37,16 @@ namespace Ecommerce.Api.Controllers
 
         [Authorize]
         [HttpGet]
-        public IActionResult GetProducts([FromQuery] int? categoryId)
+        public IActionResult GetProducts([FromQuery] int? categoryId, string? search)
         {
             _logger.LogInformation("GetProducts started");
             try
             {
                 var products = _repository.GetProducts(categoryId);
+                if(!string.IsNullOrWhiteSpace(search))
+                {
+                    products = products.Where(product => product.Name.Contains(search, StringComparison.OrdinalIgnoreCase)).ToList();
+                }
                 _logger.LogInformation("GetProducts success");
                 return Ok(products);
             }
