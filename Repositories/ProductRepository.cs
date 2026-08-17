@@ -24,7 +24,7 @@ namespace Ecommerce.Api.Repositories
             using(var connection = CreateConnection())
             {
                 return connection.Query<Product>(ProductQueries.GetProducts, new {
-                    categoryId = categoryId
+                    CategoryId = categoryId
                 }).ToList();
             }
         }

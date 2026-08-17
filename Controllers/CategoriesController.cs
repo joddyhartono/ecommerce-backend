@@ -21,9 +21,9 @@ namespace Ecommerce.Api.Controllers
         [HttpGet]
         public IActionResult GetAll()
         {
+            _logger.LogInformation("GetAll started");
             try
             {
-                _logger.LogInformation("GetAll started");
                 var categories = _repository.GetAll();
                 _logger.LogInformation("GetAll success");
                 return Ok(categories);
