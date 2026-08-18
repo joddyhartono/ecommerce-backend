@@ -16,7 +16,7 @@ namespace Ecommerce.Api.Repositories
         {
             using(var connection = CreateConnection())
             {
-                return connection.QueryFirstOrDefault<User>(UserQueries.GetByEmail, new
+                return connection.QueryFirstOrDefault<User>(UserQueries.qGetByEmail, new
                 {
                     Email = email
                 });
@@ -27,8 +27,8 @@ namespace Ecommerce.Api.Repositories
         {
             using(var connection = CreateConnection())
             {
-                connection.Execute(UserQueries.Update, user);
-                return connection.QueryFirstOrDefault<User>(UserQueries.GetByEmail, new {Email = user.Email});
+                connection.Execute(UserQueries.qUpdate, user);
+                return connection.QueryFirstOrDefault<User>(UserQueries.qGetByEmail, new {Email = user.Email});
             }
         }
     }

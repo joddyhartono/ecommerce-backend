@@ -16,7 +16,7 @@ namespace Ecommerce.Api.Repositories
         {
             using(var connection = CreateConnection())
             {
-                return connection.Query<Category>(CategoryQueries.GetAll).ToList();
+                return connection.Query<Category>(CategoryQueries.qGetAll).ToList();
             }
         }
     }

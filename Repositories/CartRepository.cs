@@ -11,19 +11,34 @@ namespace Ecommerce.Api.Repositories
         {
         }
 
+        public CartItem? AddToCart(int cartId, int productId, decimal price)
+        {
+            using (var connection = CreateConnection()) 
+            {
+                var cartItem = connection.QueryFirstOrDefault<CartItem>(CartQueries.qAddToCart, new { CartId = cartId, ProductId = productId, Price = price });
+                if(cartItem == null)
+                {
+                    return null;
+                }
+                var product = connection.QueryFirstOrDefault<Product>(CartQueries.qGetProduct, new { ProductId = productId });
+                cartItem.Product = product;
+                return cartItem;
+            }
+        }
+
         public Cart? GetCart(int userId)
         {
             using(var connection = CreateConnection())
             {
-                var cart = connection.QueryFirstOrDefault<Cart>(CartQueries.GetCart, new { UserId = userId });
+                var cart = connection.QueryFirstOrDefault<Cart>(CartQueries.qGetCart, new { UserId = userId });
                 if(cart == null)
                 {
                     return null;
                 }
-                var cartItems = connection.Query<CartItem>(CartQueries.GetCartItems, new { CartId = cart.Id });
+                var cartItems = connection.Query<CartItem>(CartQueries.qGetCartItems, new { CartId = cart.Id });
                 foreach (var cartItem in cartItems)
                 {
-                    var product = connection.QueryFirstOrDefault<Product>(CartQueries.GetProduct, new { ProductId = cartItem.ProductId });
+                    var product = connection.QueryFirstOrDefault<Product>(CartQueries.qGetProduct, new { ProductId = cartItem.ProductId });
                     cartItem.Product = product;
                 }
                 cart.Items = cartItems.ToList();

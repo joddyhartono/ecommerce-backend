@@ -15,7 +15,7 @@ namespace Ecommerce.Api.Repositories
         {
             using(var connection = CreateConnection())
             {
-                return connection.Query<Product>(ProductQueries.GetFeatured).ToList();
+                return connection.Query<Product>(ProductQueries.qGetFeatured).ToList();
             }
         }
 
@@ -23,7 +23,7 @@ namespace Ecommerce.Api.Repositories
         {
             using(var connection = CreateConnection())
             {
-                return connection.Query<Product>(ProductQueries.GetProducts, new {
+                return connection.Query<Product>(ProductQueries.qGetProducts, new {
                     CategoryId = categoryId
                 }).ToList();
             }
@@ -33,7 +33,7 @@ namespace Ecommerce.Api.Repositories
         {
             using(var connection = CreateConnection())
             {
-                return connection.QueryFirstOrDefault<Product>(ProductQueries.GetProduct, new
+                return connection.QueryFirstOrDefault<Product>(ProductQueries.qGetProduct, new
                 {
                     productId = productId
                 });

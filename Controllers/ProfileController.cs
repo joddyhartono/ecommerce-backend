@@ -31,6 +31,7 @@ namespace Ecommerce.Api.Controllers
                     return NotFound("User not found");
                 }
                 var updatedUser = _repository.Update(user);
+                _logger.LogInformation("Update user success");
                 return Ok(updatedUser);
             }
             catch (Exception e)
