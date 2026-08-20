@@ -45,5 +45,18 @@ namespace Ecommerce.Api.Repositories
                 return cart;
             }
         }
+
+        public bool RemoveFromCart(int cartId, int cartItemId)
+        {
+            using (var connection = CreateConnection())
+            {
+                var isDeleted = connection.Execute(CartQueries.qRemoveFromCart, new {CartId = cartId, Id = cartItemId});
+                if(isDeleted == 0)
+                {
+                    return false;
+                }
+                return true;
+            }
+        }
     }
 }

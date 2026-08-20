@@ -44,7 +44,11 @@ namespace Ecommerce.Api.Queries
                         price, 
                         price AS subtotal, 
                         created_at AS CreatedAt, 
-                        updated_at AS UpdatedAt
-            ";
+                        updated_at AS UpdatedAt";
+
+        public const string qRemoveFromCart = @"
+            DELETE FROM cart_items
+            WHERE cart_id = @CartId AND id = @Id";
+
     }
 }

@@ -25,7 +25,7 @@ namespace Ecommerce.Api.Controllers
         [Authorize]
         public IActionResult GetCart()
         {
-            _logger.LogInformation("GetCart started");
+            _logger.LogInformation("Get cart started");
             try
             {
                 var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
@@ -35,6 +35,7 @@ namespace Ecommerce.Api.Controllers
                 }
 
                 var cart = _cartRepository.GetCart(userId);
+                _logger.LogInformation("Get cart success");
                 return Ok(cart);
             }
             catch (Exception e)
@@ -48,7 +49,7 @@ namespace Ecommerce.Api.Controllers
         [Authorize]
         public IActionResult AddToCart([FromRoute] int productId)
         {
-            _logger.LogInformation("Add to started");
+            _logger.LogInformation("Add to cart started");
             try
             {
                 var product = _productRepository.GetProduct(productId);
@@ -65,11 +66,37 @@ namespace Ecommerce.Api.Controllers
 
                 var cart = _cartRepository.GetCart(userId);
                 var cartItem = _cartRepository.AddToCart(cart.Id, productId, product.Price);
+                _logger.LogInformation("Add to cart success");
                 return Ok(cartItem);
             }
             catch (Exception e)
             {
                 _logger.LogError(e, "An error occurred while adding an item to cart");
+                return StatusCode(500, "Internal server error");
+            }
+        }
+
+        [HttpDelete("{cartItemId}")]
+        [Authorize]
+        public IActionResult RemoveFromCart([FromRoute] int cartItemId)
+        {
+            _logger.LogInformation("Remove from cart started");
+            try
+            {
+                var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+                if(!int.TryParse(userIdClaim, out var userId))
+                {
+                    return Unauthorized();
+                }
+
+                var cart = _cartRepository.GetCart(userId);
+                var deleted = _cartRepository.RemoveFromCart(cart.Id, cartItemId);
+                _logger.LogInformation("Remove from cart success");
+                return NoContent();            
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e, "An error occurred while removing an item to cart");
                 return StatusCode(500, "Internal server error");
             }
         }

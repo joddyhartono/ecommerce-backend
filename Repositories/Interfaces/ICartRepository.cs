@@ -6,5 +6,6 @@ namespace Ecommerce.Api.Repositories.Interfaces
     {
         Cart? GetCart(int userId);
         CartItem? AddToCart(int cartId, int productId, decimal price);
+        bool RemoveFromCart(int cartId, int cartItemId);
     }
 }
