@@ -26,6 +26,22 @@ namespace Ecommerce.Api.Repositories
             }
         }
 
+        public CartItem? DecrementQuantity(int cartId, int cartItemId)
+        {
+            using (var connection = CreateConnection())
+            {
+                var cartItem = connection.QueryFirstOrDefault<CartItem>(CartQueries.qDecrementQuantity, new { CartId = cartId, Id = cartItemId});
+                if(cartItem == null)
+                {
+                    return null;
+                }
+
+                var product = connection.QueryFirstOrDefault<Product>(CartQueries.qGetProduct, new { ProductId = cartItem.ProductId });
+                cartItem.Product = product;
+                return cartItem;
+            }
+        }
+
         public Cart? GetCart(int userId)
         {
             using(var connection = CreateConnection())
@@ -43,6 +59,22 @@ namespace Ecommerce.Api.Repositories
                 }
                 cart.Items = cartItems.ToList();
                 return cart;
+            }
+        }
+
+        public CartItem? IncrementQuantity(int cartId, int cartItemId)
+        {
+            using (var connection = CreateConnection())
+            {
+                var cartItem = connection.QueryFirstOrDefault<CartItem>(CartQueries.qIncrementQuantity, new { CartId = cartId, Id = cartItemId });
+                if(cartItem == null)
+                {
+                    return null;
+                }
+                
+                var product = connection.QueryFirstOrDefault<Product>(CartQueries.qGetProduct, new { ProductId = cartItem.ProductId });
+                cartItem.Product = product;
+                return cartItem;
             }
         }
 

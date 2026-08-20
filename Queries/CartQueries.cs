@@ -50,5 +50,19 @@ namespace Ecommerce.Api.Queries
             DELETE FROM cart_items
             WHERE cart_id = @CartId AND id = @Id";
 
+        public const string qIncrementQuantity = @"
+            UPDATE cart_items
+            SET quantity = quantity + 1
+            WHERE cart_id = @CartId AND id = @Id
+            RETURNING *, cart_id AS CartId, product_id AS ProductId, (price * quantity) AS subtotal
+        ";
+
+        public const string qDecrementQuantity = @"
+            UPDATE cart_items
+            SET quantity = quantity - 1
+            WHERE cart_id = @CartId AND id = @Id
+            RETURNING *, cart_id AS CartId, product_id AS ProductId, (price * quantity) AS subtotal
+        ";
+
     }
 }

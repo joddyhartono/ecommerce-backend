@@ -100,5 +100,55 @@ namespace Ecommerce.Api.Controllers
                 return StatusCode(500, "Internal server error");
             }
         }
+
+        [HttpPut("{cartItemId}/increment")]
+        [Authorize]
+        public IActionResult IncrementQuantity([FromRoute] int cartItemId)
+        {
+            _logger.LogInformation("Increment cart item started");
+            try
+            {
+                var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+                if(!int.TryParse(userIdClaim, out var userId))
+                {
+                    return Unauthorized();
+                }
+
+                var cart = _cartRepository.GetCart(userId);
+                var cartItem = _cartRepository.IncrementQuantity(cart.Id, cartItemId);
+                _logger.LogInformation("Increment cart item success");
+                return Ok(cartItem);
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e, "An error occurred while incrementing a cart item");
+                return StatusCode(500, "Internal server error");
+            }
+        }
+
+        [HttpPut("{cartItemId}/decrement")]
+        [Authorize]
+        public IActionResult DecrementQuantity([FromRoute] int cartItemId)
+        {
+            _logger.LogInformation("Decrement cart item started");
+            try
+            {
+                var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+                if(!int.TryParse(userIdClaim, out var userId))
+                {
+                    return Unauthorized();
+                }
+
+                var cart = _cartRepository.GetCart(userId);
+                var cartItem = _cartRepository.DecrementQuantity(cart.Id, cartItemId);
+                _logger.LogInformation("Decrement cart item success");
+                return Ok(cartItem);
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e, "An error occurred while decrementing a cart item");
+                return StatusCode(500, "Internal server error");
+            }
+        }
     }
 }
