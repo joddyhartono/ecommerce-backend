@@ -64,5 +64,9 @@ namespace Ecommerce.Api.Queries
             RETURNING *, cart_id AS CartId, product_id AS ProductId, (price * quantity) AS subtotal
         ";
 
+        public const string qClearCart = @"
+            DELETE FROM cart_items
+            WHERE cart_id = (SELECT id FROM carts WHERE user_id = @UserId);
+        ";
     }
 }

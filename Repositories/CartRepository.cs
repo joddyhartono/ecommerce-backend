@@ -26,6 +26,14 @@ namespace Ecommerce.Api.Repositories
             }
         }
 
+        public void ClearCart(int userId)
+        {
+            using (var connection = CreateConnection())
+            {
+                connection.Execute(CartQueries.qClearCart, new { UserId = userId });
+            }
+        }
+
         public CartItem? DecrementQuantity(int cartId, int cartItemId)
         {
             using (var connection = CreateConnection())

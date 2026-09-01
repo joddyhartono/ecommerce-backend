@@ -8,8 +8,20 @@ namespace Ecommerce.Api.Helpers
     public static class MidtransHelper
     {
         private static readonly HttpClient _client = new HttpClient();
+        private static readonly JsonSerializerOptions _jsonOptions = new JsonSerializerOptions
+        {
+            PropertyNameCaseInsensitive = true
+        };
 
-        public static async Task<Midtrans> Snap(string serverKey, bool isProduction, int orderId, decimal grossAmount)
+        public static bool IsValidSignature(MidtransNotification notification, string serverKey)
+        {
+            var raw = $"{notification.OrderId}{notification.StatusCode}{notification.GrossAmount}{serverKey}";
+            using var sha512 = System.Security.Cryptography.SHA512.Create();
+            var hash = sha512.ComputeHash(System.Text.Encoding.UTF8.GetBytes(raw));
+            return Convert.ToHexString(hash).ToLower() == notification.SignatureKey;
+        }
+
+        public static async Task<Midtrans> Snap(string serverKey, bool isProduction, string midtransOrderId, long grossAmount)
         {
             var endpoint = isProduction ? "https://app.midtrans.com/snap/v1/transactions" : "https://app.sandbox.midtrans.com/snap/v1/transactions";
             
@@ -23,7 +35,7 @@ namespace Ecommerce.Api.Helpers
                 {
                     transaction_details = new
                     {
-                        order_id = orderId,
+                        order_id = midtransOrderId,
                         gross_amount = grossAmount
                     }
                 };
@@ -40,7 +52,7 @@ namespace Ecommerce.Api.Helpers
                     throw new Exception($"Midtrans error ({response.StatusCode}): ({data})");
                 }
 
-                var result = JsonSerializer.Deserialize<Midtrans>(data);
+                var result = JsonSerializer.Deserialize<Midtrans>(data, _jsonOptions);
                 return result;
             }
         }

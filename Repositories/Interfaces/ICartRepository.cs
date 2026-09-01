@@ -9,5 +9,6 @@ namespace Ecommerce.Api.Repositories.Interfaces
         bool RemoveFromCart(int cartId, int cartItemId);
         CartItem? IncrementQuantity(int cartId, int cartItemId);
         CartItem? DecrementQuantity(int cartId, int cartItemId);
+        void ClearCart(int userId);
     }
 }
