@@ -16,7 +16,7 @@ builder.Services.AddCors(
     {
         options.AddPolicy("AllowOrigin", policy =>
         {
-            policy.WithOrigins("http://localhost:5173").AllowAnyHeader().AllowAnyMethod();
+            policy.WithOrigins("http://localhost:5173", "https://envoy-bronze-sprout.ngrok-free.dev").AllowAnyHeader().AllowAnyMethod();
         });
     }
 );

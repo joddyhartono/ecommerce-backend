@@ -43,7 +43,7 @@ namespace Ecommerce.Api.Repositories
         {
             using (var connection = CreateConnection())
             {
-                connection.Execute(OrderQueries.qUpdateOrderStatus, new { OrderId = orderId, TransactionStatus = transactionStatus, PaymentType = paymentType });
+                connection.Execute(OrderQueries.qUpdateOrderStatus, new { MidtransOrderId = orderId, TransactionStatus = transactionStatus, PaymentType = paymentType });
             }
         }
     }

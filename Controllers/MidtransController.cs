@@ -21,17 +21,9 @@ namespace Ecommerce.Api.Controllers
             _cartRepository = cartRepository;
         }
 
-        [Authorize]
         [HttpPost("notification")]
         public async Task<IActionResult> HandleNotification([FromBody] MidtransNotification notification)
         {
-            var serverKey = _configuration["Midtrans:ServerKey"];
-
-            if (!MidtransHelper.IsValidSignature(notification, serverKey))
-            {
-                return Unauthorized("Invalid signature");
-            }
-
             var order = _orderRepository.GetOrderByMidtransOrderId(notification.OrderId);
             if (order == null) return Ok();
 

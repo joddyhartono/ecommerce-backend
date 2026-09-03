@@ -13,14 +13,6 @@ namespace Ecommerce.Api.Helpers
             PropertyNameCaseInsensitive = true
         };
 
-        public static bool IsValidSignature(MidtransNotification notification, string serverKey)
-        {
-            var raw = $"{notification.OrderId}{notification.StatusCode}{notification.GrossAmount}{serverKey}";
-            using var sha512 = System.Security.Cryptography.SHA512.Create();
-            var hash = sha512.ComputeHash(System.Text.Encoding.UTF8.GetBytes(raw));
-            return Convert.ToHexString(hash).ToLower() == notification.SignatureKey;
-        }
-
         public static async Task<Midtrans> Snap(string serverKey, bool isProduction, string midtransOrderId, long grossAmount)
         {
             var endpoint = isProduction ? "https://app.midtrans.com/snap/v1/transactions" : "https://app.sandbox.midtrans.com/snap/v1/transactions";

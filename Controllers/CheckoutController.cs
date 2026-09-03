@@ -1,7 +1,6 @@
 using Ecommerce.Api.Helpers;
 using Ecommerce.Api.Models;
 using Ecommerce.Api.Repositories.Interfaces;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Ecommerce.Api.Controllers
@@ -22,7 +21,6 @@ namespace Ecommerce.Api.Controllers
         }
 
         [HttpPost]
-        [Authorize]
         public async Task<IActionResult> Checkout([FromBody] Checkout request)
         {
             string serverKey = _configuration["Midtrans:ServerKey"];
@@ -47,6 +45,7 @@ namespace Ecommerce.Api.Controllers
                 MidtransOrderId = $"ORDER-{cart.UserId}-{DateTimeOffset.UtcNow.ToUnixTimeMilliseconds()}", 
                 Status = "pending",
                 GrossAmount = grossAmount,
+                PaymentType = "",
                 Address = request.Address
             };
 
@@ -69,11 +68,7 @@ namespace Ecommerce.Api.Controllers
 
             long midtransGrossAmount = (long)Math.Round(grossAmount, MidpointRounding.AwayFromZero);
             Midtrans response = await MidtransHelper.Snap(serverKey, isProduction, order.MidtransOrderId, midtransGrossAmount);
-            return Ok(new
-            {
-                token = response.Token,
-                orderId = order.Id
-            });
+            return Ok(response);
         }
     }
 }

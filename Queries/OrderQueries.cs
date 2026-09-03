@@ -3,8 +3,8 @@ namespace Ecommerce.Api.Queries
     public static class OrderQueries
     {
         public const string qCreateOrder = @"
-        INSERT INTO orders (user_id, midtrans_order_id, status, gross_amount, address)
-        VALUES (@UserId, @MidtransOrderId, @Status, @GrossAmount, @Address)
+        INSERT INTO orders (user_id, midtrans_order_id, status, gross_amount, payment_type, address)
+        VALUES (@UserId, @MidtransOrderId, @Status, @GrossAmount, @PaymentType, @Address)
         RETURNING id;
         ";
 
@@ -20,7 +20,7 @@ namespace Ecommerce.Api.Queries
         ";
 
         public const string qUpdateOrderStatus = @"
-        UPDATE order
+        UPDATE orders
         SET status = @TransactionStatus, payment_Type = @PaymentType
         WHERE midtrans_order_id = @MidtransOrderId
         ";
