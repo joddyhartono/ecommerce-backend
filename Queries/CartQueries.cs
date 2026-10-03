@@ -2,6 +2,10 @@ namespace Ecommerce.Api.Queries
 {    
     public static class CartQueries
     {
+        public const string qInsert = @"
+            INSERT INTO carts (user_id) VALUES (@UserId)
+        ";
+
         public const string qGetCart = @"
             SELECT  id, 
                     user_id AS UserId, 

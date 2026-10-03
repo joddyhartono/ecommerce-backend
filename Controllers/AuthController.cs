@@ -59,5 +59,45 @@ namespace Ecommerce.Api.Controllers
                 return StatusCode(500, "Internal server error");
             }
         }
+
+        [AllowAnonymous]
+        [HttpPost("register")]
+        public IActionResult Register([FromBody] User user)
+        {
+            _logger.LogInformation("Register started");
+            try
+            {
+                var existingUser = _repository.GetByEmail(user.Email);
+                if(existingUser != null)
+                {
+                    return BadRequest("Email already exists");
+                }
+
+                if(user.Password.Length < 8)
+                {
+                    return BadRequest("Password must be at least 8 characters");
+                }
+
+                user.Password = PasswordHelper.Hash(user.Password);
+                var createdUser = _repository.Insert(user);
+
+                _logger.LogInformation("Register success");
+                return StatusCode(201, new {
+                    User = new
+                    {
+                        Id = createdUser.Id,
+                        Name = createdUser.Name,
+                        Email = createdUser.Email,
+                        Image = createdUser.Image
+                    },
+                    Token = _jwtHelper.GenerateToken(createdUser)
+                });
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e, "An error occurred while registering this user");
+                return StatusCode(500, "Internal server error");
+            }
+        }
     }
 }

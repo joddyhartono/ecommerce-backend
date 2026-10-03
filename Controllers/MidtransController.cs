@@ -1,7 +1,5 @@
-using Ecommerce.Api.Helpers;
 using Ecommerce.Api.Models;
 using Ecommerce.Api.Repositories.Interfaces;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Ecommerce.Api.Controllers
@@ -10,13 +8,11 @@ namespace Ecommerce.Api.Controllers
     [Route("[controller]")]
     public class MidtransController : ControllerBase
     {
-        private readonly IConfiguration _configuration;
         private readonly IOrderRepository _orderRepository;
         private readonly ICartRepository _cartRepository;
 
-        public MidtransController(IConfiguration configuration, IOrderRepository orderRepository, ICartRepository cartRepository)
+        public MidtransController(IOrderRepository orderRepository, ICartRepository cartRepository)
         {
-            _configuration = configuration;
             _orderRepository = orderRepository;
             _cartRepository = cartRepository;
         }

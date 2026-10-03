@@ -6,5 +6,6 @@ namespace Ecommerce.Api.Repositories.Interfaces
     {
         User? GetByEmail(string email);
         User? Update(User user);
+        User? Insert(User user);
     }
 }
