@@ -7,5 +7,6 @@ namespace Ecommerce.Api.Repositories.Interfaces
         Order CreateOrderWithItems(Order order, List<OrderItem> items);
         Order GetOrderByMidtransOrderId(string midtransOrderId);
         void UpdateOrderStatus(string orderId, string transactionStatus, string paymentType);
+        int ExpireUnpaidOrders();
     }
 }

@@ -21,8 +21,14 @@ namespace Ecommerce.Api.Queries
 
         public const string qUpdateOrderStatus = @"
         UPDATE orders
-        SET status = @TransactionStatus, payment_Type = @PaymentType
+        SET status = @TransactionStatus, payment_type = @PaymentType, updated_at = NOW()
         WHERE midtrans_order_id = @MidtransOrderId
+        ";
+
+        public const string qExpireUnpaidOrders = @"
+        UPDATE orders
+        SET status = 'expired', updated_at = NOW()
+        WHERE status = 'pending' AND created_at < NOW() - INTERVAL '1 day'
         ";
     }
 }

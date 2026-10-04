@@ -2,6 +2,7 @@ using System.Text;
 using Ecommerce.Api.Helpers;
 using Ecommerce.Api.Repositories;
 using Ecommerce.Api.Repositories.Interfaces;
+using Ecommerce.Api.Workers;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 
@@ -45,6 +46,7 @@ builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
 builder.Services.AddScoped<JwtHelper>();
 builder.Services.AddScoped<ICartRepository, CartRepository>();
 builder.Services.AddScoped<IOrderRepository, OrderRepository>();
+builder.Services.AddHostedService<ExpireOrdersWorker>();
 
 var app = builder.Build();
 

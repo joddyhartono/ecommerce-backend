@@ -26,6 +26,15 @@ namespace Ecommerce.Api.Repositories
             }
         }
 
+        public int ExpireUnpaidOrders()
+        {
+            using (var connection = CreateConnection())
+            {
+                var count = connection.Execute(OrderQueries.qExpireUnpaidOrders);
+                return count;
+            }
+        }
+
         public Order GetOrderByMidtransOrderId(string midtransOrderId)
         {
             using (var connection = CreateConnection())
