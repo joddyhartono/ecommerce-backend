@@ -48,7 +48,8 @@ namespace Ecommerce.Api.Controllers
                         Id = existingUser.Id,
                         Name = existingUser.Name,
                         Email = existingUser.Email,
-                        Image = existingUser.Image
+                        Image = existingUser.Image,
+                        IsSeller = existingUser.IsSeller
                     },
                     Token = _jwtHelper.GenerateToken(existingUser)
                 });             
@@ -88,7 +89,8 @@ namespace Ecommerce.Api.Controllers
                         Id = createdUser.Id,
                         Name = createdUser.Name,
                         Email = createdUser.Email,
-                        Image = createdUser.Image
+                        Image = createdUser.Image,
+                        IsSeller = false
                     },
                     Token = _jwtHelper.GenerateToken(createdUser)
                 });

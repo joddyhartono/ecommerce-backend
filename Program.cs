@@ -47,6 +47,7 @@ builder.Services.AddScoped<JwtHelper>();
 builder.Services.AddScoped<ICartRepository, CartRepository>();
 builder.Services.AddScoped<IOrderRepository, OrderRepository>();
 builder.Services.AddHostedService<ExpireOrdersWorker>();
+builder.Services.AddScoped<ISellerRepository, SellerRepository>();
 
 var app = builder.Build();
 
