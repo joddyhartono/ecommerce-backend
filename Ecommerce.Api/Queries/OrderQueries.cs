@@ -30,5 +30,23 @@ namespace Ecommerce.Api.Queries
         SET status = 'expired', updated_at = NOW()
         WHERE status = 'pending' AND created_at < NOW() - INTERVAL '1 day'
         ";
+
+        public const string qGetOrders = @"
+        SELECT id, midtrans_order_id AS MidtransOrderId, status, gross_amount AS GrossAmount
+        FROM orders
+        WHERE user_id = @UserId
+        ";
+
+        public const string qGetOrderById = @"
+        SELECT o.id, o.midtrans_order_id AS MidtransOrderId, 
+        o.status, o.gross_amount AS GrossAmount,
+        o.payment_type AS PaymentType, o.address,
+        oi.id, oi.price, oi.quantity,
+        p.id, p.name, p.price, p.image_url AS ImageUrl
+        FROM orders as o
+        JOIN order_items AS oi ON o.id = oi.order_id
+        JOIN products as p on oi.product_id = p.id
+        WHERE o.user_id = @UserId AND o.id = @OrderId
+        ";
     }
 }

@@ -35,6 +35,19 @@ namespace Ecommerce.Api.Repositories
             }
         }
 
+        public Order GetOrderById(int userId, int orderId)
+        {
+            using (var connection = CreateConnection())
+            {
+                var order = connection.QuerySingleOrDefault<Order>(OrderQueries.qGetOrderById, new {UserId = userId, OrderId = orderId});
+                if(order == null)
+                {
+                    return null;
+                }
+                return order;
+            }
+        }
+
         public Order GetOrderByMidtransOrderId(string midtransOrderId)
         {
             using (var connection = CreateConnection())
@@ -45,6 +58,14 @@ namespace Ecommerce.Api.Repositories
                     return null;
                 }
                 return order;
+            }
+        }
+
+        public List<Order> GetOrders(int userId)
+        {
+            using (var connection = CreateConnection())
+            {
+                return connection.Query<Order>(OrderQueries.qGetOrders, new {UserId = userId}).ToList();
             }
         }
 
