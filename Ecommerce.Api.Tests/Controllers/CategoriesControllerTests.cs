@@ -1,4 +1,5 @@
 using Ecommerce.Api.Controllers;
+using Ecommerce.Api.Models;
 using Ecommerce.Api.Repositories.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging.Abstractions;
@@ -30,6 +31,31 @@ namespace Ecommerce.Api.Tests.Controllers
             var objectResult = Assert.IsType<ObjectResult>(result);
             Assert.Equal(500, objectResult.StatusCode);
             Assert.Equal("Internal server error", objectResult.Value);
+        }
+
+        [Theory]
+        [InlineData(1, "Cap")]
+        [InlineData(2, "Shoes")]
+        public void GetAll_Success(int id, string name)
+        {
+            // Arrange
+            var categories = new List<Category>
+            {
+                new Category
+                {
+                    Id = id,
+                    Name = name
+                }
+            };
+            _repository.Setup(x => x.GetAll()).Returns(categories);
+
+            // Act
+            var result = _controller.GetAll();
+
+            // Assert
+            var objectResult = Assert.IsType<OkObjectResult>(result);
+            Assert.Equal(200, objectResult.StatusCode);
+            Assert.Equal(categories, objectResult.Value);
         }
     }   
 }
