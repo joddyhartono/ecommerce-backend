@@ -41,7 +41,7 @@ namespace Ecommerce.Api.Queries
         SELECT o.id, o.midtrans_order_id AS MidtransOrderId, 
         o.status, o.gross_amount AS GrossAmount,
         o.payment_type AS PaymentType, o.address,
-        oi.id, oi.price, oi.quantity,
+        oi.id, oi.price, oi.quantity, (oi.price * oi.quantity) AS Subtotal,
         p.id, p.name, p.price, p.image_url AS ImageUrl
         FROM orders as o
         JOIN order_items AS oi ON o.id = oi.order_id

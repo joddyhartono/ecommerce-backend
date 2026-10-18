@@ -39,12 +39,20 @@ namespace Ecommerce.Api.Repositories
         {
             using (var connection = CreateConnection())
             {
-                var order = connection.QuerySingleOrDefault<Order>(OrderQueries.qGetOrderById, new {UserId = userId, OrderId = orderId});
-                if(order == null)
-                {
-                    return null;
-                }
-                return order;
+                Order result = null;
+                connection.Query<Order, OrderItem, Product, Order>(
+                    OrderQueries.qGetOrderById,
+                    (order, item, product) =>
+                    {
+                        result = order;
+                        item.Product = product;
+                        order.Items.Add(item);
+                        return result;
+                    },
+                    new { UserId = userId, OrderId = orderId },
+                    splitOn: "id,id"
+                );
+                return result;
             }
         }
 
