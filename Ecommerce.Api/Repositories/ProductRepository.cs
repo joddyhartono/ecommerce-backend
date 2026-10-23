@@ -11,21 +11,40 @@ namespace Ecommerce.Api.Repositories
         {
         }
 
-        public List<Product> GetFeatured()
+        public List<Product> GetFeatured(int userId)
         {
             using(var connection = CreateConnection())
             {
-                return connection.Query<Product>(ProductQueries.qGetFeatured).ToList();
+                return connection.Query<Product, Seller, Product>(
+                    ProductQueries.qGetFeatured,
+                    (product, seller) =>
+                    {
+                        product.Seller = seller;
+                        return product;
+                    },
+                    new { UserId = userId },
+                    splitOn: "id"
+                ).ToList();
             }
         }
 
-        public List<Product> GetProducts(int? categoryId)
+        public List<Product> GetProducts(int? categoryId, int userId)
         {
             using(var connection = CreateConnection())
             {
-                return connection.Query<Product>(ProductQueries.qGetProducts, new {
-                    CategoryId = categoryId
-                }).ToList();
+                return connection.Query<Product, Seller, Product>(
+                    ProductQueries.qGetProducts, 
+                    (product, seller) =>
+                    {
+                        product.Seller = seller;
+                        return product;
+                    },
+                    new {
+                        CategoryId = categoryId,
+                        UserId = userId
+                    },
+                    splitOn: "id"
+                    ).ToList();
             }
         }
 
@@ -33,10 +52,19 @@ namespace Ecommerce.Api.Repositories
         {
             using(var connection = CreateConnection())
             {
-                return connection.QueryFirstOrDefault<Product>(ProductQueries.qGetProduct, new
-                {
-                    productId = productId
-                });
+                return connection.Query<Product, Seller, Product>(
+                    ProductQueries.qGetProduct,
+                    (product, seller) =>
+                    {
+                        product.Seller = seller;
+                        return product;
+                    },    
+                    new
+                    {
+                        productId = productId
+                    },
+                    splitOn: "id"
+                ).FirstOrDefault();
             }
         }
     }

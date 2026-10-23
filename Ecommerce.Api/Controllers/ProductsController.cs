@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using Ecommerce.Api.Repositories.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -24,7 +25,12 @@ namespace Ecommerce.Api.Controllers
             _logger.LogInformation("GetFeatured started");
             try
             {
-                var featured = _repository.GetFeatured();
+                var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+                if(!int.TryParse(userIdClaim, out var userId))
+                {
+                    return Unauthorized();
+                }
+                var featured = _repository.GetFeatured(userId);
                 _logger.LogInformation("GetFeatured success");
                 return Ok(featured);
             }
@@ -42,7 +48,12 @@ namespace Ecommerce.Api.Controllers
             _logger.LogInformation("GetProducts started");
             try
             {
-                var products = _repository.GetProducts(categoryId);
+                var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+                if(!int.TryParse(userIdClaim, out var userId))
+                {
+                    Unauthorized();
+                }
+                var products = _repository.GetProducts(categoryId, userId);
                 if(!string.IsNullOrWhiteSpace(search))
                 {
                     products = products.Where(product => product.Name.Contains(search, StringComparison.OrdinalIgnoreCase)).ToList();
