@@ -12,7 +12,13 @@ namespace Ecommerce.Api.Queries
         public const string qGetProducts = @"
             SELECT id, category_id AS CategoryId, seller_id AS SellerId, name, description, price, image_url AS ImageUrl
             FROM products
-            WHERE seller_id = @UserId
+            WHERE seller_id = @UserId AND row_column = 0
+        ";
+
+        public const string qDeleteProduct = @"
+            UPDATE products
+            SET row_column = 1
+            WHERE id = @ProductId AND seller_id = @UserId
         ";
     }
 }

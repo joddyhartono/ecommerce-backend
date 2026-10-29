@@ -23,6 +23,14 @@ namespace Ecommerce.Api.Repositories
             }
         }
 
+        public int DeleteProduct(int productId, int userId)
+        {
+            using (var connection = CreateConnection())
+            {
+                return connection.Execute(SellerQueries.qDeleteProduct, new {ProductId = productId, UserId = userId});
+            }
+        }
+
         public List<Product> GetProducts(int userId)
         {
             using (var connection = CreateConnection())

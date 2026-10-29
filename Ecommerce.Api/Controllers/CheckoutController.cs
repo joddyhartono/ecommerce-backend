@@ -1,6 +1,7 @@
 using Ecommerce.Api.Helpers;
 using Ecommerce.Api.Models;
 using Ecommerce.Api.Repositories.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Ecommerce.Api.Controllers
@@ -20,6 +21,7 @@ namespace Ecommerce.Api.Controllers
             _configuration = configuration;
         }
 
+        [Authorize]
         [HttpPost]
         public async Task<IActionResult> Checkout([FromBody] Checkout request)
         {

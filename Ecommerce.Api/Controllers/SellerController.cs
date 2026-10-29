@@ -76,5 +76,34 @@ namespace Ecommerce.Api.Controllers
                 return StatusCode(500, "Internal server error");
             }
         }
+
+        [Authorize]
+        [HttpPut("products/{productId}")]
+        public IActionResult DeleteProduct(int productId)
+        {
+            _logger.LogInformation("DeleteProduct started");
+            try
+            {
+                var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+                if(!int.TryParse(userIdClaim, out var userId))
+                {
+                    return Unauthorized();
+                }
+                var deleted = _repository.DeleteProduct(productId, userId);
+                if(deleted > 0)
+                {
+                    return NoContent();
+                } 
+                else
+                {
+                    return NotFound("Product not found");
+                }
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e, "An error occurred while deleting a product");
+                return StatusCode(500, "Internal server error");
+            }
+        }
     }
 }

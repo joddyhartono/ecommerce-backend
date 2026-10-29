@@ -6,5 +6,6 @@ namespace Ecommerce.Api.Repositories.Interfaces
     {
         bool Create(Seller seller);
         List<Product> GetProducts(int userId);
+        int DeleteProduct(int productId, int userId);
     }
 }
