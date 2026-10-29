@@ -22,5 +22,13 @@ namespace Ecommerce.Api.Repositories
                 return false;
             }
         }
+
+        public List<Product> GetProducts(int userId)
+        {
+            using (var connection = CreateConnection())
+            {
+                return connection.Query<Product>(SellerQueries.qGetProducts, new {UserId = userId}).ToList();
+            }
+        }
     }
 }

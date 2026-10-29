@@ -8,5 +8,11 @@ namespace Ecommerce.Api.Queries
             WHERE NOT EXISTS (
                 SELECT 1 FROM sellers WHERE user_id = @UserId
             )";
+
+        public const string qGetProducts = @"
+            SELECT id, category_id AS CategoryId, seller_id AS SellerId, name, description, price, image_url AS ImageUrl
+            FROM products
+            WHERE seller_id = @UserId
+        ";
     }
 }

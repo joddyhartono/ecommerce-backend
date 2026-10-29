@@ -5,5 +5,6 @@ namespace Ecommerce.Api.Repositories.Interfaces
     public interface ISellerRepository
     {
         bool Create(Seller seller);
+        List<Product> GetProducts(int userId);
     }
 }
