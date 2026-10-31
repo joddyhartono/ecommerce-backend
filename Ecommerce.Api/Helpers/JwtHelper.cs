@@ -1,12 +1,13 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using Ecommerce.Api.Helpers.Interfaces;
 using Ecommerce.Api.Models;
 using Microsoft.IdentityModel.Tokens;
 
 namespace Ecommerce.Api.Helpers
 {
-    public class JwtHelper
+    public class JwtHelper : IJwtHelper
     {
         private readonly IConfiguration _configuration;
 

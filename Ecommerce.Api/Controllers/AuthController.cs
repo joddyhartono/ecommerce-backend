@@ -1,4 +1,5 @@
 using Ecommerce.Api.Helpers;
+using Ecommerce.Api.Helpers.Interfaces;
 using Ecommerce.Api.Models;
 using Ecommerce.Api.Repositories.Interfaces;
 using Microsoft.AspNetCore.Authorization;
@@ -12,10 +13,10 @@ namespace Ecommerce.Api.Controllers
     {
         private readonly ILogger<AuthController> _logger;
         private readonly IUserRepository _repository;
-        private readonly JwtHelper _jwtHelper;
+        private readonly IJwtHelper _jwtHelper;
 
 
-        public AuthController(ILogger<AuthController> logger, IUserRepository repository, JwtHelper jwtHelper)
+        public AuthController(ILogger<AuthController> logger, IUserRepository repository, IJwtHelper jwtHelper)
         {
             _logger = logger;
             _repository = repository;

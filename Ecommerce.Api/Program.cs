@@ -1,5 +1,6 @@
 using System.Text;
 using Ecommerce.Api.Helpers;
+using Ecommerce.Api.Helpers.Interfaces;
 using Ecommerce.Api.Repositories;
 using Ecommerce.Api.Repositories.Interfaces;
 using Ecommerce.Api.Workers;
@@ -43,7 +44,7 @@ builder.Services.AddAuthorization();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
-builder.Services.AddScoped<JwtHelper>();
+builder.Services.AddScoped<IJwtHelper, JwtHelper>();
 builder.Services.AddScoped<ICartRepository, CartRepository>();
 builder.Services.AddScoped<IOrderRepository, OrderRepository>();
 builder.Services.AddHostedService<ExpireOrdersWorker>();
