@@ -68,6 +68,7 @@ namespace Ecommerce.Api.Controllers
                     return Unauthorized();
                 }
                 var products = _repository.GetProducts(userId);
+                _logger.LogInformation("GetProducts success");
                 return Ok(products);
             }
             catch (Exception e)
@@ -92,16 +93,45 @@ namespace Ecommerce.Api.Controllers
                 var deleted = _repository.DeleteProduct(productId, userId);
                 if(deleted > 0)
                 {
+                    _logger.LogInformation("DeleteProduct success");
                     return NoContent();
                 } 
                 else
                 {
                     return NotFound("Product not found");
                 }
+                
             }
             catch (Exception e)
             {
                 _logger.LogError(e, "An error occurred while deleting a product");
+                return StatusCode(500, "Internal server error");
+            }
+        }
+
+        [Authorize]
+        [HttpGet("products/{productId}")]
+        public IActionResult GetProduct(int productId)
+        {
+            _logger.LogInformation("GetProduct started");
+            try
+            {
+                var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+                if(!int.TryParse(userIdClaim, out var userId))
+                {
+                    return Unauthorized();
+                }
+                var product = _repository.GetProduct(userId, productId);
+                if(product == null)
+                {
+                    return NotFound("Product not found");
+                }
+                _logger.LogInformation("GetProduct success");
+                return Ok(product);
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e, "An error occurred while getting a product");
                 return StatusCode(500, "Internal server error");
             }
         }

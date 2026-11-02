@@ -31,6 +31,14 @@ namespace Ecommerce.Api.Repositories
             }
         }
 
+        public Product? GetProduct(int userId, int productId)
+        {
+            using (var connection = CreateConnection())
+            {
+                return connection.QueryFirstOrDefault<Product>(SellerQueries.qGetProducts, new { UserId = userId, ProductId = productId });
+            }
+        }
+
         public List<Product> GetProducts(int userId)
         {
             using (var connection = CreateConnection())
