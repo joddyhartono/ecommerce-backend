@@ -35,7 +35,7 @@ namespace Ecommerce.Api.Repositories
         {
             using (var connection = CreateConnection())
             {
-                return connection.QueryFirstOrDefault<Product>(SellerQueries.qGetProducts, new { UserId = userId, ProductId = productId });
+                return connection.QueryFirstOrDefault<Product>(SellerQueries.qGetProduct, new { UserId = userId, ProductId = productId });
             }
         }
 
@@ -44,6 +44,14 @@ namespace Ecommerce.Api.Repositories
             using (var connection = CreateConnection())
             {
                 return connection.Query<Product>(SellerQueries.qGetProducts, new {UserId = userId}).ToList();
+            }
+        }
+
+        public Product? UpdateProduct(Product product)
+        {
+            using (var connection = CreateConnection())
+            {
+                return connection.QueryFirstOrDefault<Product>(SellerQueries.qUpdateProduct, product);
             }
         }
     }

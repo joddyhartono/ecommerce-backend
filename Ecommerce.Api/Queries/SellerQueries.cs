@@ -26,5 +26,12 @@ namespace Ecommerce.Api.Queries
             FROM products
             WHERE seller_id = @UserId AND id = @ProductId AND row_column = 0
         ";
+
+        public const string qUpdateProduct = @"
+            UPDATE products
+            SET category_id = @CategoryId, name = @Name, description = @Description, price = @Price, image = @Image
+            WHERE id = @Id
+            RETURNING id, category_id AS CategoryId, name, description, price, image
+        ";
     }
 }

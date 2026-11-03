@@ -79,7 +79,7 @@ namespace Ecommerce.Api.Controllers
         }
 
         [Authorize]
-        [HttpPut("products/{productId}")]
+        [HttpDelete ("products/{productId}")]
         public IActionResult DeleteProduct(int productId)
         {
             _logger.LogInformation("DeleteProduct started");
@@ -132,6 +132,41 @@ namespace Ecommerce.Api.Controllers
             catch (Exception e)
             {
                 _logger.LogError(e, "An error occurred while getting a product");
+                return StatusCode(500, "Internal server error");
+            }
+        }
+
+        [Authorize]
+        [HttpPut("products/{productId}")]
+        public IActionResult UpdateProduct(int productId, Product product)
+        {
+            _logger.LogInformation("UpdateProduct started");
+            try
+            {
+                var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+                if(!int.TryParse(userIdClaim, out var userId))
+                {
+                    return Unauthorized();
+                }
+                var existing = _repository.GetProduct(userId, productId);
+                if(existing == null)
+                {
+                    return NotFound("Product not found");
+                }
+
+                existing.CategoryId = product.CategoryId;
+                existing.Name = product.Name;
+                existing.Description = product.Description;
+                existing.Price = product.Price;
+                existing.Image = product.Image;
+
+                var updatedProduct = _repository.UpdateProduct(existing);
+                _logger.LogInformation("UpdateProduct success");
+                return Ok(updatedProduct);
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e , "An error occurred while updating a product");
                 return StatusCode(500, "Internal server error");
             }
         }
