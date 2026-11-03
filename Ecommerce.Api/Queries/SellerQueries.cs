@@ -10,7 +10,7 @@ namespace Ecommerce.Api.Queries
             )";
 
         public const string qGetProducts = @"
-            SELECT id, category_id AS CategoryId, seller_id AS SellerId, name, description, price, image_url AS ImageUrl
+            SELECT id, category_id AS CategoryId, seller_id AS SellerId, name, description, price, image
             FROM products
             WHERE seller_id = @UserId AND row_column = 0
         ";
@@ -22,7 +22,7 @@ namespace Ecommerce.Api.Queries
         ";
 
         public const string qGetProduct = @"
-            SELECT id, category_id AS CategoryId, seller_id AS SellerId, name, description, price, image_url AS ImageUrl
+            SELECT id, category_id AS CategoryId, seller_id AS SellerId, name, description, price, image
             FROM products
             WHERE seller_id = @UserId AND id = @ProductId AND row_column = 0
         ";

@@ -32,7 +32,7 @@ namespace Ecommerce.Api.Queries
                     name, 
                     description,
                     price,
-                    image_url AS ImageUrl,
+                    image,
                     created_at AS CreatedAt,
                     updated_at AS UpdatedAt 
             FROM products

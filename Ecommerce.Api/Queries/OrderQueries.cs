@@ -42,7 +42,7 @@ namespace Ecommerce.Api.Queries
         o.status, o.gross_amount AS GrossAmount,
         o.payment_type AS PaymentType, o.address,
         oi.id, oi.price, oi.quantity, (oi.price * oi.quantity) AS Subtotal,
-        p.id, p.name, p.price, p.image_url AS ImageUrl
+        p.id, p.name, p.price, p.image
         FROM orders as o
         JOIN order_items AS oi ON o.id = oi.order_id
         JOIN products as p on oi.product_id = p.id
