@@ -170,5 +170,29 @@ namespace Ecommerce.Api.Controllers
                 return StatusCode(500, "Internal server error");
             }
         }
+
+        [Authorize]
+        [HttpPost("products")]
+        public IActionResult CreateProduct(Product product)
+        {
+            _logger.LogInformation("CreateProduct started");
+            try
+            {
+                var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+                if(!int.TryParse(userIdClaim, out var userId))
+                {
+                    return Unauthorized();
+                }
+                product.SellerId = userId;
+                var created = _repository.CreateProduct(product);
+                _logger.LogInformation("CreateProduct success");
+                return StatusCode(201, created);
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e, "An error occured while creating a product");
+                return StatusCode(500, "Internal server error");
+            }
+        }
     }
 }

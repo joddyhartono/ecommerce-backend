@@ -33,5 +33,11 @@ namespace Ecommerce.Api.Queries
             WHERE id = @Id
             RETURNING id, category_id AS CategoryId, name, description, price, image
         ";
+
+        public const string qCreateProduct = @"
+            INSERT INTO products (category_id, name, description, price, image, seller_id)
+            VALUES (@CategoryId, @Name, @Description, @Price, @Image, @SellerId)
+            RETURNING id, category_id AS CategoryId, name, description, price, image
+        ";
     }
 }
