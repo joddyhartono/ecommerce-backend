@@ -10,21 +10,24 @@ namespace Ecommerce.Api.Queries
             )";
 
         public const string qGetProducts = @"
-            SELECT id, category_id AS CategoryId, seller_id AS SellerId, name, description, price, image
-            FROM products
-            WHERE seller_id = @UserId AND row_column = 0
+            SELECT p.id, p.category_id AS CategoryId, p.seller_id AS SellerId, p.name, p.description, p.price, p.image
+            FROM sellers AS s
+            INNER JOIN products AS p ON s.id = p.seller_id
+            WHERE s.user_id = @UserId AND row_column = 0
         ";
 
         public const string qDeleteProduct = @"
-            UPDATE products
+            UPDATE products AS p
             SET row_column = 1
-            WHERE id = @ProductId AND seller_id = @UserId
+            FROM sellers AS s
+            WHERE p.seller_id = s.id AND p.id = @ProductId AND s.user_id = @UserId
         ";
 
         public const string qGetProduct = @"
-            SELECT id, category_id AS CategoryId, seller_id AS SellerId, name, description, price, image
-            FROM products
-            WHERE seller_id = @UserId AND id = @ProductId AND row_column = 0
+            SELECT p.id, p.category_id AS CategoryId, p.seller_id AS SellerId, p.name, p.description, p.price, p.image
+            FROM sellers AS s
+            JOIN products AS p ON s.id = p.seller_id
+            WHERE s.user_id = @UserId AND p.id = @ProductId AND row_column = 0
         ";
 
         public const string qUpdateProduct = @"
@@ -36,7 +39,9 @@ namespace Ecommerce.Api.Queries
 
         public const string qCreateProduct = @"
             INSERT INTO products (category_id, name, description, price, image, seller_id)
-            VALUES (@CategoryId, @Name, @Description, @Price, @Image, @SellerId)
+            SELECT @CategoryId, @Name, @Description, @Price, @Image, s.id
+            FROM sellers AS s
+            WHERE s.user_id = @UserId
             RETURNING id, category_id AS CategoryId, name, description, price, image
         ";
     }

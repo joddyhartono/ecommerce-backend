@@ -183,8 +183,7 @@ namespace Ecommerce.Api.Controllers
                 {
                     return Unauthorized();
                 }
-                product.SellerId = userId;
-                var created = _repository.CreateProduct(product);
+                var created = _repository.CreateProduct(product, userId);
                 _logger.LogInformation("CreateProduct success");
                 return StatusCode(201, created);
             }

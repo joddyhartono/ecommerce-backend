@@ -9,6 +9,6 @@ namespace Ecommerce.Api.Repositories.Interfaces
         int DeleteProduct(int productId, int userId);
         Product? GetProduct(int userId, int productId);
         Product? UpdateProduct(Product product);
-        Product? CreateProduct(Product product);
+        Product? CreateProduct(Product product, int userId);
     }
 }

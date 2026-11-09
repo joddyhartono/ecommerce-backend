@@ -23,11 +23,19 @@ namespace Ecommerce.Api.Repositories
             }
         }
 
-        public Product? CreateProduct(Product product)
+        public Product? CreateProduct(Product product, int userId)
         {
             using (var connection = CreateConnection())
             {
-                return connection.QueryFirstOrDefault<Product>(SellerQueries.qCreateProduct, product);
+                return connection.QueryFirstOrDefault<Product>(SellerQueries.qCreateProduct, new
+                {
+                    CategoryId = product.CategoryId,
+                    Name = product.Name,
+                    Description = product.Description,
+                    Price = product.Price,
+                    Image = product.Image,
+                    UserId = userId
+                });
             }
         }
 
