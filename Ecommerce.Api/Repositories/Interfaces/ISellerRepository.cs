@@ -10,5 +10,6 @@ namespace Ecommerce.Api.Repositories.Interfaces
         Product? GetProduct(int userId, int productId);
         Product? UpdateProduct(Product product);
         Product? CreateProduct(Product product, int userId);
+        List<Product> GetProductsBySellerId(int sellerId);
     }
 }

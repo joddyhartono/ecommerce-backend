@@ -16,6 +16,13 @@ namespace Ecommerce.Api.Queries
             WHERE s.user_id = @UserId AND row_column = 0
         ";
 
+        public const string qGetProductsBySellerId = @"
+            SELECT p.id, p.category_id AS CategoryId, p.seller_id AS SellerId, p.name, p.description, p.price, p.image, s.id, s.user_id AS UserId, s.name, s.image
+            FROM sellers AS s
+            INNER JOIN products AS p ON s.id = p.seller_id
+            WHERE s.id = @SellerId AND row_column = 0
+        ";
+
         public const string qDeleteProduct = @"
             UPDATE products AS p
             SET row_column = 1

@@ -193,5 +193,29 @@ namespace Ecommerce.Api.Controllers
                 return StatusCode(500, "Internal server error");
             }
         }
+
+        [Authorize]
+        [HttpGet("{sellerId}/products")]
+        public IActionResult GetProductsBySellerId(int sellerId)
+        {
+            _logger.LogInformation("GetProductsBySellerId started");
+            try
+            {
+                var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+                if(!int.TryParse(userIdClaim, out var userId))
+                {
+                    return Unauthorized();
+                }
+                var products = _repository.GetProductsBySellerId(sellerId);
+                _logger.LogInformation("GetProductsBySeller success");
+                return Ok(products);
+
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e, "An error occurred while getting products by seller id");                
+                return StatusCode(500, "Internal server error");
+            }
+        }
     }
 }

@@ -63,6 +63,23 @@ namespace Ecommerce.Api.Repositories
             }
         }
 
+        public List<Product> GetProductsBySellerId(int sellerId)
+        {
+            using (var connection = CreateConnection())
+            {
+                return connection.Query<Product, Seller, Product>(
+                    SellerQueries.qGetProductsBySellerId,
+                    (product, seller) =>
+                    {
+                        product.Seller = seller;
+                        return product;
+                    },
+                    new { SellerId = sellerId },
+                    splitOn: "id"
+                ).ToList();
+            }
+        }
+
         public Product? UpdateProduct(Product product)
         {
             using (var connection = CreateConnection())
